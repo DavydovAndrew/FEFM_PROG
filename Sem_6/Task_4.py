@@ -3,14 +3,20 @@ from tkinter import ttk
 
 def calc(*args):
     try:
-        out.set(eval(inp.get()))
+        color = inp.get()
+        compl = ''
+        for xx in color[:2], color[2:4], color[4:]:
+            compl += hex(255 - int(xx, 16))[2:].zfill(2)
+        out.set(compl)
+        ttk.Label(mainframe, text='', padding=(30, 8), background='#' + color).grid(column=3, row=1, sticky=W)
+        ttk.Label(mainframe, text='', padding=(30, 8), background='#' + compl).grid(column=3, row=2, sticky=W)
     except:
-        pass
+        out.set('Nothing found(((')
 
 root = Tk()
-root.title('Calculator')
+root.title('Color calculator')
 
-mainframe = ttk.Frame(root, padding="3 3 12 12")
+mainframe = ttk.Frame(root, padding="3 3 10 10")
 mainframe.grid(column=0, row=0, sticky=(N, W, E, S))
 root.columnconfigure(0, weight=1)
 root.rowconfigure(0, weight=1)
@@ -24,9 +30,8 @@ ttk.Label(mainframe, textvariable=out).grid(column=2, row=2, sticky=(W, E))
 
 ttk.Button(mainframe, text="Calculate", command=calc).grid(column=3, row=3, sticky=W)
 
-ttk.Label(mainframe, text="Input:").grid(column=1, row=1, sticky=E)
-ttk.Label(mainframe, text="Result:").grid(column=1, row=2, sticky=E)
-
+ttk.Label(mainframe, text="Color: #").grid(column=1, row=1, sticky=E)
+ttk.Label(mainframe, text="Complementary: #").grid(column=1, row=2, sticky=E)
 
 for child in mainframe.winfo_children(): 
     child.grid_configure(padx=5, pady=5)
